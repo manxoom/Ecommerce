@@ -1,0 +1,44 @@
+<?php 
+
+// This page is included by sales.php.
+// This page displays the available sale products.
+// This page will make use of the query result $r.
+// The query returns an array of: description, image, sku, name, and stock.
+
+
+include ('./includes/product_functions.inc.php');
+
+?>
+<!-- box begin -->
+<div class="box alt">
+ 	<div class="left-top-corner">
+    	<div class="right-top-corner">
+       	<div class="border-top"></div>
+       </div>
+    </div>
+    <div class="border-left">
+    	<div class="border-right">
+       	<div class="inner">
+			<h2>Current Sale Items</h2>
+				<?php 
+// Loop through each item:
+while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
+	
+	echo '<h3 id="' . $row['sku'] . '">' . $row['category'] . '::' . $row['name'] .'</h3>
+  	<div class="img-box">
+     	<p><img alt="' . $row['name'] . '" src="/ecomCL/products/' . $row['image']  . '" />' . $row['description'] . '<br />' . 
+		get_price('goodies', $row['price'], $row['sale_price']) . '
+		<strong>Availability:</strong> ' . get_stock_status($row['stock']) . '</p>
+    <p><a href="/ecomCL/cart.php?sku=' . $row['sku'] . '&action=add" class="button">Add to Cart</a></p></div>';
+					
+}?> 
+          </div>
+       </div>
+    </div>
+    <div class="left-bot-corner">
+    	<div class="right-bot-corner">
+       	<div class="border-bot"></div>
+       </div>
+    </div>
+ </div>
+<!-- box end -->

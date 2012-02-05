@@ -1,0 +1,74 @@
+<?php // This page is included by browse.php.
+// This page displays the available coffee products.
+// This page will make use of the query result $r.
+// The query returns an array of: description, image, sku, name, and stock.
+// This is the second version of the script, which handles the product's avaialability in a better manner.
+
+// Only display the header once:
+$header = false; 
+
+
+include ('./includes/product_functions.inc.php');
+
+// Loop through the results:
+while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
+
+	// If the header hasn't been shown, create it:
+	if (!$header) { ?>
+		<!-- box begin -->
+		<div class="box alt">
+			<div class="left-top-corner">
+		   	<div class="right-top-corner">
+		      	<div class="border-top"></div>
+		      </div>
+		   </div>
+		   <div class="border-left">
+		   	<div class="border-right">
+		           	<div class="inner">
+		              	<h2><?php echo $category; ?></h2>
+		              	<div class="img-box">
+		                 	<p><img alt="<?php echo $category; ?>" src="/ecomCL/products/<?php echo $row['g_image']; ?>" /><?php echo $row['g_description']; ?></p>
+		              </div>
+		           </div>
+		        </div>
+		   <div class="left-bot-corner">
+		   	<div class="right-bot-corner">
+		      	<div class="border-bot"></div>
+		      </div>
+		   </div>
+		</div>
+		<!-- box end -->
+     <p> <br clear="all" /></p>	
+		<!-- box begin -->
+		<div class="box">
+			<div class="left-top-corner">
+		   	<div class="right-top-corner">
+		      	<div class="border-top"></div>
+		      </div>
+		   </div>
+		   <div class="border-left">
+		   	<div class="border-right">
+		      	<div class="inner">
+<?php // The header has now been shown:
+		$header = true;
+	} // End of $header IF.
+
+// Show each product:
+	echo '<h3>' . $row['name'] . '</h3>
+  	<div class="img-box">
+     	<p><img alt="' . $row['name'] . '" src="/ecomCL/products/' . $row['image']  . '" />' . $row['description'] . '<br />' .
+		get_price($type, $row['price'], $type) . 
+		'<strong>Availability:</strong> ' . get_stock_status($row['stock']) . '</p>
+    <p><a href="/ecomCL/cart.php?sku=' . $row['sku'] . '&action=add" class="button">Add to Cart</a></p></div>';
+
+} // End of WHILE loop. 
+?>       <p> <br clear="all" /></p>	
+      </div>
+   </div>
+   <div class="left-bot-corner">
+   	<div class="right-bot-corner">
+      	<div class="border-bot"></div>
+      </div>
+   </div>
+</div>
+<!-- box end -->

@@ -1,0 +1,61 @@
+
+
+
+<div align="center"><img src="/ecomCL/images/checkout_indicator2.png" /></div>
+<br clear="all" />
+
+<?php // Display the cart:
+include ('./includes/header.html');
+include ('./views/checkout_cart.html');
+?> 
+
+<div class="box alt">
+	<div class="left-top-corner">
+   	<div class="right-top-corner">
+      	<div class="border-top"></div>
+      </div>
+   </div>
+   <div class="border-left">
+   	<div class="border-right">
+       	<div class="inner">
+			<h2>Your Billing Information</h2>
+			<p>Please enter your billing information below. Then click the button to complete your order. For your security, we will not store your billing information in any way. We accept Visa, MasterCard, American Express, and Discover.</p>
+			
+<form action="/ecomCL/final.php" method="POST" id="billing_form">
+
+	<fieldset>
+
+		<div class="field"><label for="cc_number"><strong>Card Number</strong></label><br />
+		    <input type="text" name="cc_number"/></div>
+
+		<div class="field"><label for="exp_date"><strong>Expiration Date</strong></label><br /></div>
+
+		<div class="field"><label for="cc_cvv"><strong>CVV</strong></label><br /></div>
+
+	<div class="field"><label for="cc_first_name"><strong>First Name </strong></label><br /></div>
+	
+	<div class="field"><label for="cc_last_name"><strong>Last Name </strong></label><br /></div>
+	
+	<div class="field"><label for="cc_address"><strong>Street Address </strong></label><br /></div>
+	
+	<div class="field"><label for="cc_city"><strong>City </strong></label><br /></div>
+	
+	<div class="field"><label for="cc_state"><strong>State </strong></label><br /></div>
+	
+	<div class="field"><label for="cc_zip"><strong>Zip Code </strong></label><br /></div>
+		
+	<br clear="all" />
+	
+<div align="center" id="submit_div"><input type="submit" value="Place Order" class="button" /></div></fieldset></form>
+<div>By clicking this button, your order will be completed and your credit card will be charged.</div>
+</div>
+      </div>
+   </div>
+   <div class="left-bot-corner">
+   	<div class="right-bot-corner">
+      	<div class="border-bot"></div>
+      </div>
+   </div>
+</div>
+<!-- box end -->
+

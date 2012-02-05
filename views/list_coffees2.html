@@ -1,0 +1,54 @@
+<?php // This page is included by browse.php.
+// This page displays the available coffee products.
+// This page will make use of the query result $r.
+// The query returns an array of: description, image, sku, name, and stock.
+
+// Only display the header once:
+$header = false; 
+
+
+include ('./includes/product_functions.inc.php');
+
+// Loop through the results:
+while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
+	
+	// If the header hasn't been shown, create it:
+	if (!$header) { ?>
+		<!-- box begin -->
+		<div class="box alt">
+			<div class="left-top-corner">
+		   	<div class="right-top-corner">
+		      	<div class="border-top"></div>
+		      </div>
+		   </div>
+		   <div class="border-left">
+		   	<div class="border-right">
+		           	<div class="inner">
+		              	<h2><?php echo $category; ?></h2>
+		              	<div class="img-box">
+		                 	<p><img alt="<?php echo $category; ?>" src="/ecomCL/products/<?php echo $row['image']; ?>" /><?php echo $row['description']; ?></p>
+		<p><small>All listed products are currently available.</small>
+		<form action="/ecomCL/cart.php" method="get"><input type="hidden" name="action" value="add" /><select name="sku">
+		
+		
+<?php // The header has now been shown:
+	$header = true;
+} // End of $header IF.
+
+
+
+	// Create each option:
+	echo '<option value="' . $row['sku'] . '">' . $row['name'] . get_price($type, $row['price'], $row['sale_price']) . '</option>';
+	
+} // End of WHILE loop. 
+?></select> <input type="submit" value="Add to Cart" class="button" /></p></form></div>
+		              </div>
+		           </div>
+		        </div>
+		   <div class="left-bot-corner">
+		   	<div class="right-bot-corner">
+		      	<div class="border-bot"></div>
+		      </div>
+		   </div>
+		</div>
+		<!-- box end -->

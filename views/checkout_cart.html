@@ -1,0 +1,111 @@
+<div class="box alt">
+	<div class="left-top-corner">
+   	<div class="right-top-corner">
+      	<div class="border-top"></div>
+      </div>
+   </div>
+   <div class="border-left">
+   	<div class="border-right">
+           	<div class="inner">
+	
+			<h2>Your Shopping Cart</h2>
+				<table border="0" cellspacing="8" cellpadding="6" width="100%">
+					<tr>
+						<th align="center">Item</th>
+						<th align="center">Quantity</th>
+						<th align="right">Price</th>
+						<th align="right">Subtotal</th>
+					</tr>
+<?php // Display the products:
+
+// Need the utility functions:
+include ('./includes/product_functions.inc.php');
+
+// Initialize the total:
+$total = 0;
+
+// For removing problematic items:
+$remove = array();
+
+// Fetch each product:
+while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
+	
+	// Check the stock status:
+	if ($row['stock'] < $row['quantity']) {
+	
+		echo '<tr class="error"><td colspan="4" align="center">There are only ' . $row['stock'] . ' left in stock of the ' . $row['name'] . '. This item has been removed from your cart and placed in your wish list.</td></tr>';
+	
+		$remove[$row['sku']] = $row['quantity'];
+		
+	} else {
+	
+		// Get the correct price:
+		$price = get_just_price($row['price'], $row['sale_price']);
+
+		// Calculate the subtotal:
+		$subtotal = $price * $row['quantity'];
+
+		// Print out a table row:
+		echo '<tr><td>' . $row['category'] . '::' . $row['name'] . '</td>
+			<td align="center">' . $row['quantity'] . '</td>
+			<td align="right">$' . $price . '</td>
+			<td align="right">$' . number_format($subtotal, 2) . '</td>
+		</tr>
+		';
+
+		// Add the subtotal to the total:
+	  	$total += $subtotal;
+
+	}
+
+} // End of WHILE loop. 
+
+// Add the shipping:
+$shipping = get_shipping($total);
+$total += $shipping;
+echo '<tr>
+	<td colspan="2"> </td><th align="right">Shipping &amp; Handling</th>
+	<td align="right">$' . $shipping . '</td>
+</tr>
+';
+
+// Store the shipping in the session:
+$_SESSION['shipping'] = $shipping;
+
+// Display the total:
+echo '<tr>
+	<td colspan="2"> </td><th align="right">Total</th>
+	<td align="right">$' . number_format($total, 2) . '</td>
+	<td>&nbsp;</td>
+</tr>
+';
+
+// Remove any problematic items:
+if (!empty($remove)) {
+	
+	// Clear the results:
+	mysqli_next_result($dbc);
+	
+	// Loop through the array:
+	foreach ($remove as $sku => $qty) {
+
+		list($sp_type, $pid) = parse_sku($sku);
+		
+		// Move it to the wish list:
+		$r = mysqli_multi_query($dbc, "CALL add_to_wish_list('$uid', '$sp_type', $pid, $qty);CALL remove_from_cart('$uid', '$sp_type', $pid)");		
+		echo "CALL add_to_wish_list('$uid', '$sp_type', $pid, $qty);CALL remove_from_cart('$uid', '$sp_type', $pid)";
+	} // End of FOREACH loop.
+	
+} // End of $remove IF.
+
+?>         </table>
+</div>	
+      </div>
+   </div>
+   <div class="left-bot-corner">
+   	<div class="right-bot-corner">
+      	<div class="border-bot"></div>
+      </div>
+   </div>
+</div>
+<!-- box end -->
