@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+# For sales:
+RewriteRule ^shop/sales/?$ sales.php
+# For the primary categories:
+RewriteRule ^shop/([A-Za-z\+]+)/?$ shop.php?type=$1
+# For specific products:
+RewriteRule ^browse/([A-Za-z\+\-]+)/([A-Za-z\+\-]+)/([0-9]+)$ browse.php?type=$1&category=$2&id=$3
+Options -MultiViews
+</IfModule>
